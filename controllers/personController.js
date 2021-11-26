@@ -1,4 +1,5 @@
 const Person = require('../models/personModel');
+const { getPostData } = require('../utils');
 
 //@desc Gets all persons
 //@route GET/person
@@ -8,7 +9,7 @@ async function getPersons(req, res) {
     res.writeHead(200, {'Content-Type':'text/html'});
     res.end(JSON.stringify(person));
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
 }
 
@@ -25,7 +26,7 @@ async function getPerson(req, res, personUUID) {
       res.end(JSON.stringify(person));
     }
   } catch (error) {
-    console.log(error);
+      console.log(error);
   }
 }
 
@@ -33,32 +34,71 @@ async function getPerson(req, res, personUUID) {
 //@route POST/person
 async function createPerson(req, res) {
   try {
-    let body = '';
+    const body = await getPostData(req);
+    const { name, age, hobbies } = JSON.parse(body);
+   
+    const person = {
+      name,
+      age,
+      hobbies,
+    };
 
-    req.on('data', (chunk) => {
-      console.log(chunk.toString());
-      body += chunk.toString();
-    });
-
-    req.on('end', async () => {
-      const {name, age, hobbies} = JSON.parse(body)
-
-      const person = {
-        name,
-        age,
-        hobbies,
-      };
-      
-      const newPerson = await Person.create(person);
-      res.writeHead(201, {'Content-Type':'application/json'});
-      res.end(JSON.stringify(newPerson));
-    });
+    const newPerson = await Person.create(person);
+    res.writeHead(201, {'Content-Type':'application/json'});
+    res.end(JSON.stringify(newPerson));
     
   } catch (error) {
-    console.log(error);
+      console.log(error);
+  }
+}
+
+//@desc Update a person
+//@route PUT/person/:personId
+async function updatePerson(req, res, id) {
+  try {
+    const person = await Person.findByUUID(id);
+
+    if(!person){
+      res.writeHead(404, {'Content-Type':'text/html'});
+      res.end(JSON.stringify({message : 'Person with that ID not found'}));
+    } 
+    else {
+      const body = await getPostData(req);
+      const { name, age, hobbies } = JSON.parse(body);
+     
+      const personData = {
+        name: name || person.name,
+        age: age || person.age ,
+        hobbies: hobbies || person.hobbies,
+      };
+  
+      const updatePerson = await Person.update(id, personData);
+      res.writeHead(200, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(updatePerson));
+    }  
+  } catch (error) {
+      console.log(error);
+  }
+}
+
+//@desc Delete one person
+//@route DELETE/person/:personId
+async function deletePerson(req, res, personUUID) {
+  try {
+    const person = await Person.findByUUID(personUUID);
+    if (!person){
+      res.writeHead(404, {'Content-Type':'text/html'});
+      res.end(JSON.stringify({message : 'Person with that ID not found'}));
+    } else{
+      await Person.remove(personUUID);
+      res.writeHead(200, {'Content-Type':'text/html'});
+      res.end(JSON.stringify({message : `Person ${person.name} removed`}));
+    }
+  } catch (error) {
+      console.log(error);
   }
 }
 
 
 
-module.exports = {getPersons, getPerson, createPerson};
+module.exports = {getPersons, getPerson, createPerson, updatePerson, deletePerson};
