@@ -1,3 +1,4 @@
+const { rejects } = require('assert/strict');
 const fs = require('fs');
 
 function writeDataToFile(filename, content){
@@ -6,6 +7,23 @@ function writeDataToFile(filename, content){
       console.log(error);
     };
   });
-}
+};
 
-module.exports = {writeDataToFile};
+function getPostData(req){
+  return new Promise((resolve, reject) => {
+    try {
+      let body = '';
+      req.on('data', (chunk) =>{
+        body += chunk.toString();
+      });
+
+      req.on('end', () => {
+        resolve(body);
+      });
+    } catch (error) {
+          rejects(error);
+    }
+  });
+};
+
+module.exports = {writeDataToFile, getPostData };
