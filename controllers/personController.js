@@ -42,11 +42,19 @@ async function createPerson(req, res) {
       age,
       hobbies,
     };
-
-    const newPerson = await Person.create(person);
-    res.writeHead(201, {'Content-Type':'application/json'});
-    res.end(JSON.stringify(newPerson));
     
+    if (person.name && person.age && person.hobbies.length!=0){
+
+      const newPerson = await Person.create(person);
+      res.writeHead(201, {'Content-Type':'application/json'});
+      res.end(JSON.stringify(newPerson));
+    }
+
+    else{
+      res.writeHead(400, {'Content-Type':'application/json'});
+      res.end(JSON.stringify({message: "Name, age, hobbies are required"}));
+    }
+
   } catch (error) {
       console.log(error);
   }
@@ -91,8 +99,8 @@ async function deletePerson(req, res, personUUID) {
       res.end(JSON.stringify({message : 'Person with that ID not found'}));
     } else{
       await Person.remove(personUUID);
-      res.writeHead(200, {'Content-Type':'text/html'});
-      res.end(JSON.stringify({message : `Person ${person.name} removed`}));
+      res.writeHead(204, {'Content-Type':'text/html'});
+      res.end();
     }
   } catch (error) {
       console.log(error);
