@@ -1,10 +1,9 @@
-const { rejects } = require('assert/strict');
 const fs = require('fs');
 
 function writeDataToFile(filename, content){
   fs.writeFileSync(filename, JSON.stringify(content), 'utf-8', (err) => {
     if (err) {
-      console.log(error);
+      console.log(err);
     };
   });
 };
@@ -20,10 +19,10 @@ function getPostData(req){
       req.on('end', () => {
         resolve(body);
       });
-    } catch (error) {
-          rejects(error);
+    } catch (err) {
+        reject(err);
     }
   });
 };
 
-module.exports = {writeDataToFile, getPostData };
+module.exports = {writeDataToFile, getPostData};

@@ -9,7 +9,8 @@ async function getPersons(req, res) {
     res.writeHead(200, {'Content-Type':'text/html'});
     res.end(JSON.stringify(person));
   } catch (error) {
-      console.log(error);
+    res.writeHead(500, {'Content-Type':'text/html'});
+    res.end(JSON.stringify({message : 'JSON parse error'}));
   }
 }
 
@@ -26,7 +27,8 @@ async function getPerson(req, res, personUUID) {
       res.end(JSON.stringify(person));
     }
   } catch (error) {
-      console.log(error);
+    res.writeHead(500, {'Content-Type':'text/html'});
+    res.end(JSON.stringify({message : 'JSON parse error'}));
   }
 }
 
@@ -56,7 +58,8 @@ async function createPerson(req, res) {
     }
 
   } catch (error) {
-      console.log(error);
+    res.writeHead(500, {'Content-Type':'text/html'});
+    res.end(JSON.stringify({message : 'JSON parse error'}));
   }
 }
 
@@ -85,7 +88,8 @@ async function updatePerson(req, res, id) {
       res.end(JSON.stringify(updatePerson));
     }  
   } catch (error) {
-      console.log(error);
+    res.writeHead(500, {'Content-Type':'text/html'});
+    res.end(JSON.stringify({message : 'JSON parse error'}));
   }
 }
 
@@ -103,7 +107,8 @@ async function deletePerson(req, res, personUUID) {
       res.end();
     }
   } catch (error) {
-      console.log(error);
+    res.writeHead(500, {'Content-Type':'text/html'});
+    res.end(JSON.stringify({message : 'JSON parse error'}));
   }
 }
 
