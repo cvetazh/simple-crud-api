@@ -1,18 +1,2 @@
-[{
-  "id" : "6a2f41a3-c54c-fce8-32d2-0324e1c32e22",
-  "name" : "Sveta Zhilina",
-  "age" : "22",
-  "hobbies" : ["books", "nodejs", "chess"]
-},
-{
-  "id" : "222222",
-  "name" : "Anastasia Pushkina",
-  "age" : "22",
-  "hobbies" : ["books", "nodejs", "chess"]
-},
-{
-  "id" : "333333",
-  "name" : "Alisa Bobkova",
-  "age" : "23",
-  "hobbies" : ["books", "nodejs", "chess"]
-}]
+[{"id":"df78ecda-258d-4afa-9e25-c1de9d034425","name":"name1","age":46,"hobbies":["books","nodejs","chess"]},
+{"id":"45de38e4-92ce-4cf7-9cba-4680651ef9e6","name":"name2","age":15,"hobbies":["car"]}]
